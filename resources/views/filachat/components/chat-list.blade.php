@@ -22,14 +22,16 @@
     <!-- Search Bar -->
     <div class="hidden md:block sticky top-0 z-10 h-20 p-5 border-b dark:border-gray-800/60 border-gray-200/90">
         <x-filament::input.wrapper suffix-icon="heroicon-m-magnifying-glass">
-            <x-filament::input type="text" placeholder="{{__('Search any messages...')}}" x-on:click="$dispatch('open-modal', { id: 'search-conversation' })"/>
+            <x-filament::input type="text" placeholder="{{__('Search any messages...')}}"
+                               x-on:click="$dispatch('open-modal', { id: 'search-conversation' })" />
         </x-filament::input.wrapper>
     </div>
-     <div class="md:hidden block sticky top-0 z-10 p-1 border-b dark:border-gray-800/60 border-gray-200/90">
-            <x-filament::button class="w-full" color="gray" icon="heroicon-m-magnifying-glass" x-on:click="$dispatch('open-modal', { id: 'search-conversation' })"></x-filament::button>
+    <div class="md:hidden block sticky top-0 z-10 p-1 border-b dark:border-gray-800/60 border-gray-200/90">
+        <x-filament::button class="w-full" color="gray" icon="heroicon-m-magnifying-glass"
+                            x-on:click="$dispatch('open-modal', { id: 'search-conversation' })"></x-filament::button>
     </div>
     <!-- Search Modal -->
-    <livewire:filachat-search-conversation/>
+    <livewire:filachat-search-conversation />
 
     <!-- Conversations -->
     <div class="flex-1 overflow-y-auto">
@@ -40,7 +42,7 @@
                 });" class="grid w-full">
                 @foreach ($this->conversations as $conversation)
                     <a wire:key="{{ $conversation->id }}" wire:navigate
-                        href="{{ FilaChat::getUrl(tenant: filament()->getTenant()) . '/' . $conversation->id }}"
+                       href="{{ FilaChat::getUrl(tenant: filament()->getTenant()) . '/' . $conversation->id }}"
                         @class([
                             'p-2 md:p-5 mx-1 my-0.5 rounded-xl',
                             'hover:bg-gray-100 hover:dark:bg-gray-800/20' =>

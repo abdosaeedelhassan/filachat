@@ -28,7 +28,7 @@ class FilaChatCreateAgentCommand extends Command
             required: true,
             label: 'Enter the agent ID',
             placeholder: 'E.g. 24',
-            hint: 'This will be used to identify the agent belongs to ' . config('filachat.agent_model') . ' model.',
+            hint: 'This will be used to identify the agent belongs to '.config('filachat.agent_model').' model.',
             validate: function ($value) {
                 if (! is_numeric($value)) {
                     return 'The ID must be a number';
@@ -44,7 +44,7 @@ class FilaChatCreateAgentCommand extends Command
         $isExistingRecord = config('filachat.agent_model')::find($agentableId);
 
         if (! $isExistingRecord) {
-            $this->error('Agent using this ID with model ' . config('filachat.agent_model') . ' does not exist.');
+            $this->error('Agent using this ID with model '.config('filachat.agent_model').' does not exist.');
 
             return;
         }
@@ -55,7 +55,7 @@ class FilaChatCreateAgentCommand extends Command
             ->first();
 
         if ($existingAgent) {
-            $this->error('Agent using this ID with model ' . config('filachat.agent_model') . ' already exists.');
+            $this->error('Agent using this ID with model '.config('filachat.agent_model').' already exists.');
 
             return;
         }

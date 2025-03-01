@@ -20,12 +20,22 @@ use RyanChandler\BladeCaptureDirective\BladeCaptureDirectiveServiceProvider;
 
 class TestCase extends Orchestra
 {
+    public function getEnvironmentSetUp($app)
+    {
+        config()->set('database.default', 'testing');
+
+        /*
+        $migration = include __DIR__.'/../database/migrations/create_filachat_table.php.stub';
+        $migration->up();
+        */
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'JaOcero\\FilaChat\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
+            fn (string $modelName) => 'JaOcero\\FilaChat\\Database\\Factories\\'.class_basename($modelName).'Factory'
         );
     }
 
@@ -46,15 +56,5 @@ class TestCase extends Orchestra
             WidgetsServiceProvider::class,
             FilaChatServiceProvider::class,
         ];
-    }
-
-    public function getEnvironmentSetUp($app)
-    {
-        config()->set('database.default', 'testing');
-
-        /*
-        $migration = include __DIR__.'/../database/migrations/create_filachat_table.php.stub';
-        $migration->up();
-        */
     }
 }

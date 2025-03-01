@@ -1,14 +1,14 @@
 @props(['selectedConversation'])
 <!-- Right Section (Chat Conversation) -->
 <div
-        x-load-css="[@js(\Filament\Support\Facades\FilamentAsset::getStyleHref('filachat-styles', package: 'jaocero/filachat'))]"
-        class="flex flex-col w-full md:w-2/3 overflow-hidden">
+    x-load-css="[@js(\Filament\Support\Facades\FilamentAsset::getStyleHref('filachat-styles', package: 'jaocero/filachat'))]"
+    class="flex flex-col w-full md:w-2/3 overflow-hidden">
     @if ($selectedConversation)
         <!-- Chat Header -->
         <div class="flex items-center h-20 gap-2 p-5 border-b dark:border-gray-800/60 border-gray-200/90">
             <x-filament::avatar
-                    src="https://ui-avatars.com/api/?name={{ urlencode($selectedConversation->other_person_name) }}"
-                    alt="Profile" size="lg" />
+                src="https://ui-avatars.com/api/?name={{ urlencode($selectedConversation->other_person_name) }}"
+                alt="Profile" size="lg" />
             <div class="flex flex-col">
                 <p class="text-base font-bold">{{ $selectedConversation->other_person_name }}</p>
                 @php
@@ -79,12 +79,12 @@
                             // Show avatar if the current message is the first in a consecutive sequence or a new day
                             $showAvatar = $message->senderable_id !== auth()->user()->id && ($message->senderable_id !== $previousSenderId || $currentMessageDate !== $previousMessageDate);
                         @endphp
-                                <!-- Left Side -->
+                            <!-- Left Side -->
                         <div class="flex items-end gap-2 mb-2">
                             @if ($showAvatar)
                                 <x-filament::avatar
-                                        src="https://ui-avatars.com/api/?name={{ urlencode($selectedConversation->sender_name) }}"
-                                        alt="Profile" size="sm" />
+                                    src="https://ui-avatars.com/api/?name={{ urlencode($selectedConversation->sender_name) }}"
+                                    alt="Profile" size="sm" />
                             @else
                                 <div class="w-6 h-6"></div> <!-- Placeholder to align the messages properly -->
                             @endif
@@ -99,7 +99,8 @@
                                         @endphp
                                         <div wire:click="downloadFile('{{ $attachment }}', '{{ $originalFileName }}')"
                                              class="flex items-center gap-1 bg-gray-50 dark:bg-gray-700 p-2 my-2 rounded-lg group cursor-pointer">
-                                            <div class="p-2 text-white bg-gray-500 dark:bg-gray-600 rounded-full group-hover:bg-gray-700 group-hover:dark:bg-gray-800">
+                                            <div
+                                                class="p-2 text-white bg-gray-500 dark:bg-gray-600 rounded-full group-hover:bg-gray-700 group-hover:dark:bg-gray-800">
                                                 @php
                                                     $icon = 'heroicon-m-x-mark';
 
@@ -145,7 +146,8 @@
                     @else
                         <!-- Right Side -->
                         <div class="flex flex-col items-end gap-2 mb-2">
-                            <div class="max-w-md p-2 text-white rounded-t-xl rounded-bl-xl bg-primary-600 dark:bg-primary-500">
+                            <div
+                                class="max-w-md p-2 text-white rounded-t-xl rounded-bl-xl bg-primary-600 dark:bg-primary-500">
                                 @if ($message->message)
                                     <p class="text-sm">{{ $message->message }}</p>
                                 @endif
@@ -156,7 +158,8 @@
                                         @endphp
                                         <div wire:click="downloadFile('{{ $attachment }}', '{{ $originalFileName }}')"
                                              class="flex items-center gap-1 bg-primary-500 dark:bg-primary-800 p-2 my-2 rounded-lg group cursor-pointer">
-                                            <div class="p-2 text-white bg-primary-600 rounded-full group-hover:bg-primary-700 group-hover:dark:bg-primary-900">
+                                            <div
+                                                class="p-2 text-white bg-primary-600 rounded-full group-hover:bg-primary-700 group-hover:dark:bg-primary-900">
                                                 @php
                                                     $icon = 'heroicon-m-x-circle';
 
@@ -254,18 +257,18 @@
 
 </div>
 @script
-    <script>
-        $wire.on('chat-box-scroll-to-bottom', () => {
+<script>
+    $wire.on('chat-box-scroll-to-bottom', () => {
 
-            chatContainer = document.getElementById('chatContainer');
-            chatContainer.scrollTo({
-                top: chatContainer.scrollHeight,
-                behavior: 'smooth',
-            });
+        chatContainer = document.getElementById('chatContainer')
+        chatContainer.scrollTo({
+            top: chatContainer.scrollHeight,
+            behavior: 'smooth',
+        })
 
-            setTimeout(() => {
-                chatContainer.scrollTop = chatContainer.scrollHeight;
-            }, 400);
-        });
-    </script>
+        setTimeout(() => {
+            chatContainer.scrollTop = chatContainer.scrollHeight
+        }, 400)
+    })
+</script>
 @endscript
