@@ -16,6 +16,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Show menu item
+    |--------------------------------------------------------------------------
+    |
+    | This option controls whether this plugin registers a menu item in the
+    | sidebar. If disabled, you can manually register a navigation item in a
+    | different part of the panel.
+    |
+    */
+    'show_in_menu' => true,
+
+    /*
+    |--------------------------------------------------------------------------
     | User Model
     |--------------------------------------------------------------------------
     |
@@ -236,6 +248,18 @@ return [
     |
     */
     'navigation_icon' => 'heroicon-o-chat-bubble-bottom-center',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Navigation Sort
+    |--------------------------------------------------------------------------
+    |
+    | This option specifies the navigation sort used in the chat navigation. You can
+    | customize this if you have a different sort order in your application.
+    |
+    */
+
+    'navigation_sort' => 1,
 
     /*
     |--------------------------------------------------------------------------

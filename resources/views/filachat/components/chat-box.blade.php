@@ -19,36 +19,60 @@
                     }
                 @endphp
                 <p class="text-sm text-gray-500 dark:text-gray-400">
-                    @if($selectedConversation->isGroup())
-                        {{__('Group')}}
+                    @if ($isOtherPersonAgent)
+                        {{__('Agent')}}
                     @else
-                        @if ($isOtherPersonAgent)
-                            {{__('Agent')}}
-                        @else
-                            {{__('User')}}
-                        @endif
+                        {{__('User')}}
                     @endif
                 </p>
             </div>
         </div>
 
         <!-- Chat Messages -->
-        <div x-data="{ markAsRead: false }" x-init="
+        <div x-data="{ markAsRead: false, isTyping:false }" x-init="
 
-            Echo.channel('filachat')
-                .listen('.JaOcero\\FilaChat\\Events\\FilaChatMessageReadEvent', e => {
-                    if (e.conversationId == @js($selectedConversation->id)) {
-                        markAsRead = true;
+            const channel = Echo.channel('filachat');
+
+            channel.listen('.JaOcero\\FilaChat\\Events\\FilaChatMessageReadEvent', e => {
+                if (e.conversationId == @js($selectedConversation->id)) {
+                    markAsRead = true;
+                }
+            });
+            channel.listen('.JaOcero\\FilaChat\\Events\\FilaChatMessageReceiverIsAwayEvent', e => {
+                if (e.conversationId == @js($selectedConversation->id)) {
+                    markAsRead = false;
+                }
+            });
+
+            // listen to typing event and reset the typing status after 3 seconds
+            channel.listen('.JaOcero\\FilaChat\\Events\\FilaChatUserTypingEvent', e => {
+                if (e.conversationId == @js($selectedConversation->id)) {
+                    if(e.receiverId == @js(auth()->id())) {
+                        isTyping = true;
+                           setTimeout(() => {
+                                isTyping = false;
+                            }, 3000);
                     }
-                })
-                .listen('.JaOcero\\FilaChat\\Events\\FilaChatMessageReceiverIsAwayEvent', e => {
-                    if (e.conversationId == @js($selectedConversation->id)) {
-                        markAsRead = false;
-                    }
-                });
+                }
+            });
 
             " id="chatContainer"
              class="flex flex-col-reverse flex-1 p-5 overflow-y-auto">
+            <!-- add the typing indicator to the bottom of the chat box -->
+            <div class="flex items-end gap-2 mb-2" x-show="isTyping">
+                <x-filament::avatar
+                    src="https://ui-avatars.com/api/?name={{ urlencode($selectedConversation->other_person_name) }}"
+                    alt="Profile" size="sm" />
+                <div class="max-w-md p-2 bg-gray-200 rounded-t-xl rounded-br-xl dark:bg-gray-800" >
+                    <p class="text-sm">
+                        <svg height="40" width="40" class="loader">
+                            <circle class="dot" cx="10" cy="20" r="3" style="fill:grey;" />
+                            <circle class="dot" cx="20" cy="20" r="3" style="fill:grey;" />
+                            <circle class="dot" cx="30" cy="20" r="3" style="fill:grey;" />
+                        </svg>
+                    </p>
+                </div>
+            </div>
             <!-- Message Item -->
             @foreach ($conversationMessages as $index => $message)
                 <div wire:key="{{ $message->id }}">
@@ -83,7 +107,7 @@
                         <div class="flex items-end gap-2 mb-2">
                             @if ($showAvatar)
                                 <x-filament::avatar
-                                    src="https://ui-avatars.com/api/?name={{ urlencode($selectedConversation->sender_name) }}"
+                                    src="https://ui-avatars.com/api/?name={{ urlencode($selectedConversation->other_person_name) }}"
                                     alt="Profile" size="sm" />
                             @else
                                 <div class="w-6 h-6"></div> <!-- Placeholder to align the messages properly -->
@@ -97,10 +121,8 @@
                                         @php
                                             $originalFileName = $this->getOriginalFileName($attachment, $message->original_attachment_file_names);
                                         @endphp
-                                        <div wire:click="downloadFile('{{ $attachment }}', '{{ $originalFileName }}')"
-                                             class="flex items-center gap-1 bg-gray-50 dark:bg-gray-700 p-2 my-2 rounded-lg group cursor-pointer">
-                                            <div
-                                                class="p-2 text-white bg-gray-500 dark:bg-gray-600 rounded-full group-hover:bg-gray-700 group-hover:dark:bg-gray-800">
+                                        <div wire:click="downloadFile('{{ $attachment }}', '{{ $originalFileName }}')" class="flex items-center gap-1 bg-gray-50 dark:bg-gray-700 p-2 my-2 rounded-lg group cursor-pointer">
+                                            <div class="p-2 text-white bg-gray-500 dark:bg-gray-600 rounded-full group-hover:bg-gray-700 group-hover:dark:bg-gray-800">
                                                 @php
                                                     $icon = 'heroicon-m-x-mark';
 
@@ -146,8 +168,7 @@
                     @else
                         <!-- Right Side -->
                         <div class="flex flex-col items-end gap-2 mb-2">
-                            <div
-                                class="max-w-md p-2 text-white rounded-t-xl rounded-bl-xl bg-primary-600 dark:bg-primary-500">
+                            <div class="max-w-md p-2 text-white rounded-t-xl rounded-bl-xl bg-primary-600 dark:bg-primary-500">
                                 @if ($message->message)
                                     <p class="text-sm">{{ $message->message }}</p>
                                 @endif
@@ -156,10 +177,8 @@
                                         @php
                                             $originalFileName = $this->getOriginalFileName($attachment, $message->original_attachment_file_names);
                                         @endphp
-                                        <div wire:click="downloadFile('{{ $attachment }}', '{{ $originalFileName }}')"
-                                             class="flex items-center gap-1 bg-primary-500 dark:bg-primary-800 p-2 my-2 rounded-lg group cursor-pointer">
-                                            <div
-                                                class="p-2 text-white bg-primary-600 rounded-full group-hover:bg-primary-700 group-hover:dark:bg-primary-900">
+                                        <div wire:click="downloadFile('{{ $attachment }}', '{{ $originalFileName }}')" class="flex items-center gap-1 bg-primary-500 dark:bg-primary-800 p-2 my-2 rounded-lg group cursor-pointer">
+                                            <div class="p-2 text-white bg-primary-600 rounded-full group-hover:bg-primary-700 group-hover:dark:bg-primary-900">
                                                 @php
                                                     $icon = 'heroicon-m-x-circle';
 
@@ -226,6 +245,7 @@
                     <div class="w-full mb-6 text-center text-gray-500">{{__('Loading more messages...')}}</div>
                 </div>
             @endif
+
         </div>
 
 
@@ -237,8 +257,7 @@
                     {{ $this->form }}
                 </div>
                 <div class="p-1">
-                    <x-filament::button type="submit" icon="heroicon-m-paper-airplane"
-                                        class="!gap-0"></x-filament::button>
+                    <x-filament::button type="submit" icon="heroicon-m-paper-airplane" class="!gap-0"></x-filament::button>
                 </div>
             </form>
 
@@ -260,15 +279,15 @@
 <script>
     $wire.on('chat-box-scroll-to-bottom', () => {
 
-        chatContainer = document.getElementById('chatContainer')
+        chatContainer = document.getElementById('chatContainer');
         chatContainer.scrollTo({
             top: chatContainer.scrollHeight,
             behavior: 'smooth',
-        })
+        });
 
         setTimeout(() => {
-            chatContainer.scrollTop = chatContainer.scrollHeight
-        }, 400)
-    })
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }, 400);
+    });
 </script>
 @endscript

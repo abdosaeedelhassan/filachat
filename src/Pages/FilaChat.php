@@ -20,6 +20,11 @@ class FilaChat extends Page
         return config('filachat.slug').'/{id?}';
     }
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        return config('filachat.show_in_menu', true);
+    }
+
     public static function getNavigationLabel(): string
     {
         return __(config('filachat.navigation_label'));
@@ -61,6 +66,11 @@ class FilaChat extends Page
     public static function getNavigationIcon(): string|Htmlable|null
     {
         return config('filachat.navigation_icon');
+    }
+
+    public static function getNavigationSort(): ?int
+    {
+        return config('filachat.navigation_sort');
     }
 
     public function mount(?int $id = null): void
