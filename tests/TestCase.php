@@ -35,7 +35,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'JaOcero\\FilaChat\\Database\\Factories\\'.class_basename($modelName).'Factory'
+            fn (string $modelName) => 'JaOcero\\FilaChat\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
         );
     }
 

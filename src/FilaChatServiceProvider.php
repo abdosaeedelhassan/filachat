@@ -81,7 +81,7 @@ class FilaChatServiceProvider extends PackageServiceProvider
     public function packageRegistered(): void
     {
         parent::packageRegistered();
-        $this->loadJsonTranslationsFrom(__DIR__.'/../resources/lang/');
+        $this->loadJsonTranslationsFrom(__DIR__ . '/../resources/lang/');
     }
 
     public function packageBooted(): void
@@ -102,7 +102,7 @@ class FilaChatServiceProvider extends PackageServiceProvider
 
         // Handle Stubs
         if (app()->runningInConsole()) {
-            foreach (app(Filesystem::class)->files(__DIR__.'/../stubs/') as $file) {
+            foreach (app(Filesystem::class)->files(__DIR__ . '/../stubs/') as $file) {
                 $this->publishes([
                     $file->getRealPath() => base_path("stubs/filachat/{$file->getFilename()}"),
                 ], 'filachat-stubs');
@@ -125,7 +125,7 @@ class FilaChatServiceProvider extends PackageServiceProvider
     {
         return [
             // AlpineComponent::make('filachat', __DIR__ . '/../resources/dist/components/filachat.js'),
-            Css::make('filachat-styles', __DIR__.'/../resources/css/filachat.css')->loadedOnRequest(),
+            Css::make('filachat-styles', __DIR__ . '/../resources/css/filachat.css')->loadedOnRequest(),
             // Js::make('filachat-scripts', __DIR__ . '/../resources/dist/filachat.js'),
         ];
     }

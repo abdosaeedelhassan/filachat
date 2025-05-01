@@ -141,7 +141,7 @@ class ChatList extends Component implements HasActions, HasForms
         return $this->createConversationAction(name: 'createConversationSmallSizeAction', isLabelHidden: true);
     }
 
-    public function render(): Application|Factory|View|\Illuminate\View\View
+    public function render(): Application | Factory | View | \Illuminate\View\View
     {
         return view('filachat::filachat.components.chat-list');
     }

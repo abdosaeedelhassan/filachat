@@ -61,7 +61,7 @@ class FilaChatConversation extends Model
         $attachmentCount = count($latestMessage->attachments);
         $fileWord = $attachmentCount > 1 ? 'files' : 'file';
 
-        return 'Sent '.$attachmentCount.' '.$fileWord.'.';
+        return 'Sent ' . $attachmentCount . ' ' . $fileWord . '.';
     }
 
     public function getUnreadCountAttribute(): int

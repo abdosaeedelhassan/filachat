@@ -44,19 +44,19 @@ class ChatListService
 
         // Check if the user model class exists
         if (! class_exists($this->userModelClass)) {
-            throw new InvalidArgumentException('User model class '.$this->userModelClass.' not found');
+            throw new InvalidArgumentException('User model class ' . $this->userModelClass . ' not found');
         }
 
         // Check if the agent model class exists
         if (! class_exists($this->agentModelClass)) {
-            throw new InvalidArgumentException('Agent model class '.$this->agentModelClass.' not found');
+            throw new InvalidArgumentException('Agent model class ' . $this->agentModelClass . ' not found');
         }
 
         // Validate that all specified columns exist in the user model
         foreach (config('filachat.user_searchable_columns') as $column) {
             $userTable = (new $this->userModelClass)->getTable();
             if (! Schema::hasColumn($userTable, $column)) {
-                throw new InvalidArgumentException('Column '.$column.' not found in '.$userTable);
+                throw new InvalidArgumentException('Column ' . $column . ' not found in ' . $userTable);
             }
         }
         $this->userSearchableColumns = config('filachat.user_searchable_columns');
@@ -65,7 +65,7 @@ class ChatListService
         foreach (config('filachat.agent_searchable_columns') as $column) {
             $agentTable = (new $this->agentModelClass)->getTable();
             if (! Schema::hasColumn($agentTable, $column)) {
-                throw new InvalidArgumentException('Column '.$column.' not found in '.$agentTable);
+                throw new InvalidArgumentException('Column ' . $column . ' not found in ' . $agentTable);
             }
         }
         $this->agentSearchableColumns = config('filachat.agent_searchable_columns');
@@ -73,7 +73,7 @@ class ChatListService
 
     public function getSearchResults(string $search): Collection
     {
-        $searchTerm = '%'.$search.'%';
+        $searchTerm = '%' . $search . '%';
 
         if ($this->isRoleEnabled) {
 
@@ -281,7 +281,7 @@ class ChatListService
                     ));
                 }
 
-                return redirect(FilaChat::getUrl(tenant: filament()->getTenant()).'/'.$conversation->id);
+                return redirect(FilaChat::getUrl(tenant: filament()->getTenant()) . '/' . $conversation->id);
             });
         } catch (Exception $exception) {
             Notification::make()
