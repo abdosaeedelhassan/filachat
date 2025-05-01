@@ -77,7 +77,7 @@ class ChatList extends Component implements HasActions, HasForms
                     ->visible(function (Forms\Get $get) {
                         return $get('type') != null;
                     })
-                    ->multiple(fn(Forms\Get $get) => $get('type') == 'group')
+                    ->multiple(fn (Forms\Get $get) => $get('type') == 'group')
                     ->label(function (Forms\Get $get) use ($isRoleEnabled, $isAgent) {
 
                         if ($get('type') === 'group') {
@@ -95,35 +95,35 @@ class ChatList extends Component implements HasActions, HasForms
                         return __('To');
                     })
                     ->placeholder(function () use ($isRoleEnabled, $isAgent) {
-                        if ($isRoleEnabled && !$isAgent) {
+                        if ($isRoleEnabled && ! $isAgent) {
                             return __('Select Agent by Name or Email');
                         }
 
                         return __('Select User by Name or Email');
                     })
                     ->searchPrompt(function () use ($isRoleEnabled, $isAgent) {
-                        if ($isRoleEnabled && !$isAgent) {
+                        if ($isRoleEnabled && ! $isAgent) {
                             return __('Search Agent by Name or Email');
                         }
 
                         return __('Search User by Name or Email');
                     })
                     ->loadingMessage(function () use ($isRoleEnabled, $isAgent) {
-                        if ($isRoleEnabled && !$isAgent) {
+                        if ($isRoleEnabled && ! $isAgent) {
                             return __('Loading Agents...');
                         }
 
                         return __('Loading Users...');
                     })
                     ->noSearchResultsMessage(function () use ($isRoleEnabled, $isAgent) {
-                        if ($isRoleEnabled && !$isAgent) {
+                        if ($isRoleEnabled && ! $isAgent) {
                             return __('No Agents Found.');
                         }
 
                         return __('No Users Found.');
                     })
-                    ->getSearchResultsUsing(fn(string $search): array => ChatListService::make()->getSearchResults($search)->toArray())
-                    ->getOptionLabelUsing(fn($value): ?string => ChatListService::make()->getOptionLabel($value))
+                    ->getSearchResultsUsing(fn (string $search): array => ChatListService::make()->getSearchResults($search)->toArray())
+                    ->getOptionLabelUsing(fn ($value): ?string => ChatListService::make()->getOptionLabel($value))
                     ->searchable()
                     ->required(),
                 Forms\Components\Textarea::make('message')
@@ -133,7 +133,7 @@ class ChatList extends Component implements HasActions, HasForms
                     ->autosize(),
             ])->modalSubmitActionLabel(__('Add'))
             ->modalWidth(MaxWidth::Large)
-            ->action(fn(array $data) => ChatListService::make()->createConversation($data));
+            ->action(fn (array $data) => ChatListService::make()->createConversation($data));
     }
 
     public function createConversationSmallSizeAction(): Action

@@ -19,7 +19,6 @@ class FilaChatGroup extends Model
         'owner_id',
     ];
 
-
     public function isAgent(): bool
     {
         return false;
@@ -31,10 +30,8 @@ class FilaChatGroup extends Model
             ->where('receiverable_type', FilaChatGroup::class);
     }
 
-
     public function members(): HasMany
     {
         return $this->hasMany(FilaChatGroupMember::class, 'group_id');
     }
-
 }

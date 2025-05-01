@@ -88,8 +88,8 @@ class ChatBox extends Component implements HasForms
                     ->storeFileNamesIn('original_attachment_file_names')
                     ->fetchFileInformation()
                     ->disk(config('filachat.disk'))
-                    ->directory(fn() => config('filachat.disk') == 's3' ? config('filachat.s3.directory') : 'attachments')
-                    ->visibility(fn() => config('filachat.disk') == 's3' ? config('filachat.s3.visibility') : 'public')
+                    ->directory(fn () => config('filachat.disk') == 's3' ? config('filachat.s3.directory') : 'attachments')
+                    ->visibility(fn () => config('filachat.disk') == 's3' ? config('filachat.s3.visibility') : 'public')
                     ->acceptedFileTypes(config('filachat.mime_types'))
                     ->maxSize(config('filachat.max_file_size'))
                     ->minSize(config('filachat.min_file_size'))
@@ -99,7 +99,7 @@ class ChatBox extends Component implements HasForms
                     ->extraAttributes([
                         'class' => 'filachat-filepond',
                     ])
-                    ->visible(fn() => $this->showUpload),
+                    ->visible(fn () => $this->showUpload),
                 Forms\Components\Split::make([
                     Forms\Components\Actions::make([
                         Forms\Components\Actions\Action::make('show_hide_upload')
@@ -107,7 +107,7 @@ class ChatBox extends Component implements HasForms
                             ->icon('heroicon-m-plus')
                             ->color('gray')
                             ->tooltip(__('Upload Files'))
-                            ->action(fn() => $this->showUpload = !$this->showUpload),
+                            ->action(fn () => $this->showUpload = ! $this->showUpload),
                     ])
                         ->grow(false),
                     Forms\Components\Textarea::make('message')
@@ -116,7 +116,7 @@ class ChatBox extends Component implements HasForms
                             if ($isRoleEnabled) {
 
                                 // if both in the conversation are normal users
-                                if (!$isAgent && !$isOtherPersonAgent) {
+                                if (! $isAgent && ! $isOtherPersonAgent) {
                                     return __('You cannot write a message for other user...');
                                 }
 
@@ -133,7 +133,7 @@ class ChatBox extends Component implements HasForms
                             if ($isRoleEnabled) {
 
                                 // if both in the conversation are normal users
-                                if (!$isAgent && !$isOtherPersonAgent) {
+                                if (! $isAgent && ! $isOtherPersonAgent) {
                                     return true;
                                 }
 
@@ -143,12 +143,12 @@ class ChatBox extends Component implements HasForms
                                 }
 
                                 // if one in the conversation is an agent
-                                if ($isAgent && !$isOtherPersonAgent) {
+                                if ($isAgent && ! $isOtherPersonAgent) {
                                     return false;
                                 }
 
                                 // if one in the conversation is a normal user
-                                if (!$isAgent && $isOtherPersonAgent) {
+                                if (! $isAgent && $isOtherPersonAgent) {
                                     return false;
                                 }
                             }

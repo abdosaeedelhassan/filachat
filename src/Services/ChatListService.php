@@ -43,20 +43,20 @@ class ChatListService
         $this->agentChatListDisplayColumn = config('filachat.agent_chat_list_display_column');
 
         // Check if the user model class exists
-        if (!class_exists($this->userModelClass)) {
-            throw new InvalidArgumentException('User model class ' . $this->userModelClass . ' not found');
+        if (! class_exists($this->userModelClass)) {
+            throw new InvalidArgumentException('User model class '.$this->userModelClass.' not found');
         }
 
         // Check if the agent model class exists
-        if (!class_exists($this->agentModelClass)) {
-            throw new InvalidArgumentException('Agent model class ' . $this->agentModelClass . ' not found');
+        if (! class_exists($this->agentModelClass)) {
+            throw new InvalidArgumentException('Agent model class '.$this->agentModelClass.' not found');
         }
 
         // Validate that all specified columns exist in the user model
         foreach (config('filachat.user_searchable_columns') as $column) {
             $userTable = (new $this->userModelClass)->getTable();
-            if (!Schema::hasColumn($userTable, $column)) {
-                throw new InvalidArgumentException('Column ' . $column . ' not found in ' . $userTable);
+            if (! Schema::hasColumn($userTable, $column)) {
+                throw new InvalidArgumentException('Column '.$column.' not found in '.$userTable);
             }
         }
         $this->userSearchableColumns = config('filachat.user_searchable_columns');
@@ -64,8 +64,8 @@ class ChatListService
         // Validate that all specified columns exist in the agent model
         foreach (config('filachat.agent_searchable_columns') as $column) {
             $agentTable = (new $this->agentModelClass)->getTable();
-            if (!Schema::hasColumn($agentTable, $column)) {
-                throw new InvalidArgumentException('Column ' . $column . ' not found in ' . $agentTable);
+            if (! Schema::hasColumn($agentTable, $column)) {
+                throw new InvalidArgumentException('Column '.$column.' not found in '.$agentTable);
             }
         }
         $this->agentSearchableColumns = config('filachat.agent_searchable_columns');
@@ -73,7 +73,7 @@ class ChatListService
 
     public function getSearchResults(string $search): Collection
     {
-        $searchTerm = '%' . $search . '%';
+        $searchTerm = '%'.$search.'%';
 
         if ($this->isRoleEnabled) {
 
@@ -160,13 +160,13 @@ class ChatListService
     public function getOptionLabel(string $value): ?string
     {
         if (preg_match('/^user_(\d+)$/', $value, $matches)) {
-            $id = (int)$matches[1];
+            $id = (int) $matches[1];
 
             return $this->userModelClass::find($id)->{$this->userChatListDisplayColumn};
         }
 
         if (preg_match('/^agent_(\d+)$/', $value, $matches)) {
-            $id = (int)$matches[1];
+            $id = (int) $matches[1];
 
             return $this->agentModelClass::find($id)->{$this->agentChatListDisplayColumn};
         }
@@ -209,12 +209,12 @@ class ChatListService
 
                     if (preg_match('/^user_(\d+)$/', $receiverableId, $matches)) {
                         $receiverableType = $this->userModelClass;
-                        $receiverableId = (int)$matches[1];
+                        $receiverableId = (int) $matches[1];
                     }
 
                     if (preg_match('/^agent_(\d+)$/', $receiverableId, $matches)) {
                         $receiverableType = $this->agentModelClass;
-                        $receiverableId = (int)$matches[1];
+                        $receiverableId = (int) $matches[1];
                     }
                     $foundConversation = FilaChatConversation::query()
                         ->where(function ($query) use ($receiverableId, $receiverableType, $senderableId, $senderableType) {
@@ -238,7 +238,7 @@ class ChatListService
                                 });
                         })
                         ->first();
-                    if (!$foundConversation) {
+                    if (! $foundConversation) {
                         $conversation = FilaChatConversation::query()->create([
                             'senderable_id' => $senderableId,
                             'senderable_type' => $senderableType,
@@ -281,7 +281,7 @@ class ChatListService
                     ));
                 }
 
-                return redirect(FilaChat::getUrl(tenant: filament()->getTenant()) . '/' . $conversation->id);
+                return redirect(FilaChat::getUrl(tenant: filament()->getTenant()).'/'.$conversation->id);
             });
         } catch (Exception $exception) {
             Notification::make()

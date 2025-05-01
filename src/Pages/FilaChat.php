@@ -17,7 +17,7 @@ class FilaChat extends Page
 
     public static function getSlug(): string
     {
-        return config('filachat.slug') . '/{id?}';
+        return config('filachat.slug').'/{id?}';
     }
 
     public static function getNavigationLabel(): string
