@@ -35,11 +35,6 @@ class FilaChat extends Page
         return __(config('filachat.navigation_group'));
     }
 
-    public static function getNavigationSort(): ?int
-    {
-        return config('filachat.navigation_sort');
-    }
-
     public static function getCluster(): ?string
     {
         return config('filachat.cluster');
